@@ -3,8 +3,27 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import incident as models
 from app.schemas import incident as schemas
+from typing import Optional
 
 router = APIRouter()
+
+@router.get("/incidents/search", response_model=list[schemas.IncidentRead])
+def search_incidents(
+    department_id: Optional[int] = None,
+    station_id: Optional[int] = None,
+    incident_type: Optional[str] = None,
+    db: Session = Depends(get_db)
+):
+    query = db.query(models.Incident)
+
+    if department_id:
+        query = query.filter(models.Incident.department_id == department_id)
+    if station_id:
+        query = query.filter(models.Incident.station_id == station_id)
+    if incident_type:
+        query = query.filter(models.Incident.incident_type == incident_type)
+
+    return query.all()
 
 @router.get("/incidents", response_model=list[schemas.IncidentRead])
 def get_incidents(db: Session = Depends(get_db)):

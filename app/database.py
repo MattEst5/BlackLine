@@ -23,6 +23,6 @@ def get_db():
 
 Base = declarative_base()
 
-from app.models import incident
+from app.models import incident, user, department
 
 Base.metadata.create_all(bind=engine)
