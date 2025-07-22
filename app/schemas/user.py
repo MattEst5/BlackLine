@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Optional
 
 class UserCreate(BaseModel):
     dept_id: int 
@@ -16,4 +16,13 @@ class UserRead(BaseModel):
 
     class Config:
         orm_mode = True
+
+class UserUpdate(BaseModel):
+    full_name: Optional[str] = None
+    email: Optional[str] = None
+    role: Optional[str] = None
+
+    class Config:
+        from_attributes = True
+
 

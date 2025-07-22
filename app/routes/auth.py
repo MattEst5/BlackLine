@@ -6,6 +6,7 @@ from app.database import get_db
 from app.models import user as models
 from app.schemas import auth as schemas
 from app.utils import auth as utils, jwt_handler
+from app.utils.role_checker import require_admin
 
 router = APIRouter()
 
@@ -20,3 +21,7 @@ def login(user_credentials: schemas.UserLogin, db: Session = Depends(get_db)):
     
     access_token = jwt_handler.create_access_token({"user_id": user.user_id})
     return {"access_token": access_token, "token_type": "bearer"}
+
+@router.get("/admin-only")
+def read_admin_data(current_user = Depends(require_admin)):
+    return {"message": f"Welcome, {current_user.username}. You have admin access."}
