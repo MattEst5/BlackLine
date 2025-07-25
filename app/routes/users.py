@@ -48,7 +48,7 @@ def update_user(user_id: int, user_update: schemas.UserUpdate,
     if user_update.full_name is not None:
         user.full_name = user_update.full_name
     if user_update.email is not None:
-        user.emain = user_update.email
+        user.email = user_update.email
     if user_update.role is not None:
         user.role = user_update.role
 

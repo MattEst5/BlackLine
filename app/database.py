@@ -1,11 +1,8 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import Session, sessionmaker, declarative_base
-from dotenv import load_dotenv
-import os
+from app.core.settings import settings  
 
-load_dotenv()  
-
-DATABASE_URL = os.getenv("DATABASE_URL")
+DATABASE_URL = settings.DATABASE_URL
 
 if not DATABASE_URL:
     raise Exception("DATABASE_URL is not set in .env file.")
@@ -25,4 +22,5 @@ Base = declarative_base()
 
 from app.models import incident, user, department
 
-Base.metadata.create_all(bind=engine)
+if __name__ == "__main__":
+    Base.metadata.create_all(bind=engine)
