@@ -1,5 +1,5 @@
 from fastapi import FastAPI
-from app.routes import incidents, users, auth, departments
+from app.routes import incidents, users, auth
 
 app = FastAPI()
 
@@ -10,5 +10,4 @@ def root():
 app.include_router(auth.router)
 app.include_router(users.router)
 app.include_router(incidents.router)
-app.include_router(users.router)
-app.include_router(departments.router)
+

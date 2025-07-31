@@ -1,26 +1,28 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 from typing import Optional
 
 class IncidentBase(BaseModel):
-    department_id: int
+    incident_number: str
     shift_id: int
-    station_id: int
-    incident_type: str
-    dspch_notes: Optional[str] = None
-    actions_taken: Optional[str] = None
-    call_time: datetime
-    enrt_time: Optional[datetime] = None
-    arrival_time: Optional[datetime] = None
-    completed_time: Optional[datetime] = None
-    duration_hours: Optional[float] = None
-    response_time: Optional[float] = None
+    business_name: str
+    address: str
+    city: str
+    state: str
+    zipcode: str
+    latitude: Optional[float] = None
+    longitude: Optional[float] = None
+    narrative: Optional[str] = None
+    mutual_aid: bool = False
 
 class IncidentCreate(IncidentBase):
-    pass
+    alarm_time: Optional[datetime] = None
 
 class IncidentRead(IncidentBase):
     incident_id: int
+    dept_id: int
+    alarm_time: datetime
+    created_at: datetime
 
     class Config:
-        orm_mode = True
+        from_attributes = True

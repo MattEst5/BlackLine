@@ -3,6 +3,7 @@ from sqlalchemy.orm import Session
 from app.database import SessionLocal
 from app.models import user as user_models, department as dept_models
 from app.utils import auth as utils
+from datetime import datetime
 
 def get_db() -> Session:
     db = SessionLocal()
@@ -20,9 +21,13 @@ def create_user(args):
         dept_id=args.dept_id,
         username=args.username,
         hashed_password=hashed_pw,
+        role=args.role,
         full_name=args.full_name,
         email=args.email,
-        role=args.role        
+        rank=getattr(args, "rank", None),        # optional arg
+        hire_date=getattr(args, "hire_date", None),  # optional arg
+        status=getattr(args, "status", "active"),
+        created_at=datetime.utcnow()  # ✅ system generated
     )
     db.add(new_user)
     db.commit()
@@ -96,6 +101,9 @@ def main():
     user_create.add_argument("--full-name", required=True)
     user_create.add_argument("--email", required=True)
     user_create.add_argument("--role", default="user")
+    user_create.add_argument("--rank", required=False)
+    user_create.add_argument("--hire-date", required=False)
+    user_create.add_argument("--status", default="active")
     user_create.set_defaults(func=create_user)
 
     user_list = subparsers.add_parser("list-users")
